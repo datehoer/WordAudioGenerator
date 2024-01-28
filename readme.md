@@ -1,5 +1,4 @@
 # Word Audio Generator
----
 一键生成单词英汉Excel以及通过单词组成的文章音频文件
 
 ### 💬 介绍
