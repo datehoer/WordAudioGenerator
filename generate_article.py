@@ -29,6 +29,11 @@ def generate_and_save_audio(content, title):
         print("Error generating audio: ", e)
 
 
+def save_text_file(content, title):
+    with open("{}.txt".format(title.split(': ')[-1]), "w", encoding='utf-8') as file:
+        file.write(content)
+
+
 def main():
     try:
         with open("words.txt", "r") as f:
@@ -52,7 +57,7 @@ def main():
         title = content_json['title']
 
         generate_and_save_audio(content, title)
-
+        save_text_file(content, title)
     except Exception as e:
         print("Error: ", e)
 
