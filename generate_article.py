@@ -4,6 +4,7 @@ import re
 import pandas as pd
 from translate import google_translate
 from config import *
+import epitran
 
 
 def replace_multiple_spaces_with_single_space(text):
@@ -15,6 +16,11 @@ def translate_words(words):
     word = [[i, item, google_translate(item, proxy=proxy)] for i, item in enumerate(words.split(" "), start=1)]
     df = pd.DataFrame(word, columns=columns)
     df.to_excel('output.xlsx', index=False)
+
+
+def get_word_phonetic(word):
+    phonetic = epi.transliterate(word)
+    return phonetic
 
 
 def generate_and_save_audio(content, title):
@@ -63,4 +69,5 @@ def main():
 
 
 if __name__ == "__main__":
+    epi = epitran.Epitran('eng-Latn')
     main()

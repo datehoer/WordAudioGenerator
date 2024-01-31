@@ -19,8 +19,9 @@
 
 ### 📚 依赖库说明
 
-- `requests`：用于处理请求
-- `pandas`：用于Excel文件生成
+- `requests`: 用于处理请求
+- `pandas`: 用于Excel文件生成
+- `epitran`: 用于单词发音生成
 - 其他依赖请参考`requirements.txt`文件
 
 ### 🛠️ 常见问题
@@ -28,3 +29,11 @@
 - 如果在安装或运行时遇到问题，请检查您的Python版本是否为3.11
 - 确保所有依赖都已通过`requirements.txt`正确安装
 - 如果遇到网络连接问题，请检查您的网络设置和代理配置
+
+### 📜 epitran安装问题
+
+这里我是在Linux上使用成功，在Windows上安装失败
+
+Linux安装教程参考[Installation of Flite](https://github.com/dmort27/epitran?tab=readme-ov-file#installation-of-flite-for-english-g2p)
+
+预处理以及结果处理参考[Preprocessors and postprocessors](https://github.com/dmort27/epitran?tab=readme-ov-file#preprocesssors-and-postprocessors)
