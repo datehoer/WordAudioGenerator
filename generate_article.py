@@ -36,7 +36,7 @@ def translate_words(words):
         conn.commit()
         cursor.close()
     df = pd.DataFrame(word, columns=columns)
-    df.to_excel('output.xlsx', index=False)
+    df.to_excel('/data/output.xlsx', index=False)
 
 
 def request(url, data, headers):
@@ -105,14 +105,14 @@ def generate_and_save_audio(content, title):
     try:
         res = request(url, headers=openai_header, data=data)
         if res:
-            with open("{}.mp3".format(title.split(': ')[-1]), "wb") as f:
+            with open("/data/{}.mp3".format(title.split(': ')[-1]), "wb") as f:
                 f.write(res.content)
     except Exception as e:
         logging.error(f"Save Audio Error: {e}")
 
 
 def save_text_file(content, title):
-    with open("{}.txt".format(title.split(': ')[-1]), "w", encoding='utf-8') as file:
+    with open("/data/{}.txt".format(title.split(': ')[-1]), "w", encoding='utf-8') as file:
         file.write(content)
 
 
