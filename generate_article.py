@@ -14,8 +14,8 @@ def replace_multiple_spaces_with_single_space(text):
     return re.sub(r'\s+', ' ', text)
 
 
-def translate_words(words):
-    columns = ['No.', 'Word', 'Meaning', 'Pronunciation']
+def translate_words(words, title, word_count):
+    columns = ['No.', 'Word', 'Meaning', 'Pronunciation', 'Count']
     word = []
     batch_data = []
     for i, item in enumerate(words.split(" "), start=1):
@@ -29,14 +29,14 @@ def translate_words(words):
                 word_phonetic = word_data['phonetic']
                 batch_data.append((item, word_phonetic, word_meaning))
                 # cursor.execute("INSERT OR REPLACE INTO words VALUES (?, ?, ?)", (item, word_phonetic, word_meaning))
-        word.append([i, item, word_meaning, word_phonetic])
+        word.append([i, item, word_meaning, word_phonetic, word_count[item]])
     if batch_data:
         cursor = conn.cursor()
         cursor.executemany("INSERT OR REPLACE INTO words VALUES (?, ?, ?)", batch_data)
         conn.commit()
         cursor.close()
     df = pd.DataFrame(word, columns=columns)
-    df.to_excel('/data/output.xlsx', index=False)
+    df.to_excel('data/' + title.split(': ')[-1].replace(" ", "_") + '_output.xlsx', index=False)
 
 
 def request(url, data, headers):
@@ -54,7 +54,7 @@ def request(url, data, headers):
 
 def get_word(word):
     messages = [
-        {"role": "user", "content": "请告诉我{}的中文意思以及音标,返回的数据为json格式数据，包含word,meaning,phonetic。".format(word)}
+        {"role": "user", "content": "请告诉我{}的中文意思以及音标,返回的数据为json格式数据，包含word,meaning,phonetic".format(word)}
     ]
     chat_data = openai_text_data.copy()
     chat_data['messages'] = messages
@@ -105,15 +105,20 @@ def generate_and_save_audio(content, title):
     try:
         res = request(url, headers=openai_header, data=data)
         if res:
-            with open("/data/{}.mp3".format(title.split(': ')[-1]), "wb") as f:
+            with open("data/{}.mp3".format(title.split(': ')[-1]), "wb") as f:
                 f.write(res.content)
     except Exception as e:
         logging.error(f"Save Audio Error: {e}")
 
 
 def save_text_file(content, title):
-    with open("/data/{}.txt".format(title.split(': ')[-1]), "w", encoding='utf-8') as file:
+    with open("data/{}.txt".format(title.split(': ')[-1]), "w", encoding='utf-8') as file:
         file.write(content)
+
+
+def count_words_in_article(word_list, article):
+    word = {word: len(re.findall(word, article, re.IGNORECASE)) for word in word_list}
+    return word
 
 
 def main():
@@ -121,10 +126,9 @@ def main():
         with open("words.txt", "r") as f:
             words = f.read().split("\n")
         words = replace_multiple_spaces_with_single_space(" ".join(words))
-        translate_words(words)
 
         messages = [
-            {"role": "user", "content": "请通过下面的单词写一篇英文文章，语句通顺意思明确,返回的数据为json格式数据，包含title,content。{}".format(words)}
+            {"role": "user", "content": "请通过下面的单词写一篇英文文章必须包含所有的单词，语句通顺意思明确,返回的数据为json格式数据，包含title,content。{}".format(words)}
         ]
 
         chat_data = openai_text_data.copy()
@@ -138,6 +142,8 @@ def main():
         content_json = json.loads(content_json.replace("```json", "").replace("```", "").replace("\n", ""))
         content = content_json['content']
         title = content_json['title']
+        word_count = count_words_in_article(words.split(" "), content)
+        translate_words(words, title, word_count)
         generate_and_save_audio(content, title)
         save_text_file(content, title)
     except Exception as e:
