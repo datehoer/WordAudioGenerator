@@ -4,7 +4,7 @@ import requests
 import json
 import re
 import pandas as pd
-from translate import google_translate
+from translate import google_translate, YoudaoTranslater
 from config import *
 import sqlite3
 # import epitran
@@ -29,6 +29,33 @@ def translate_words(words, title, word_count):
                 word_phonetic = word_data['phonetic']
                 batch_data.append((item, word_phonetic, word_meaning))
                 # cursor.execute("INSERT OR REPLACE INTO words VALUES (?, ?, ?)", (item, word_phonetic, word_meaning))
+        word.append([i, item, word_meaning, word_phonetic, word_count[item]])
+    if batch_data:
+        cursor = conn.cursor()
+        cursor.executemany("INSERT OR REPLACE INTO words VALUES (?, ?, ?)", batch_data)
+        conn.commit()
+        cursor.close()
+    df = pd.DataFrame(word, columns=columns)
+    df.to_excel('data/' + title.split(': ')[-1].replace(" ", "_") + '_output.xlsx', index=False)
+
+
+def translate_words_youdao(words, title, word_count):
+    translate_youdao = YoudaoTranslater(proxy=proxy)
+    columns = ['No.', 'Word', 'Meaning', 'Pronunciation', 'Count']
+    word = []
+    batch_data = []
+    for i, item in enumerate(words.split(" "), start=1):
+        word_meaning = get_word_meaning(item)
+        word_phonetic = get_word_phonetic(item)
+        if not word_meaning:
+            word_meaning = translate_youdao.translate(item, toLan="zh-CHS")
+            if word_meaning and word_meaning.get("code") == 0:
+                dict_result = word_meaning.get("dictResult")
+                ec = dict_result.get("ec")
+                ec_word = ec.get("word")
+                word_phonetic = "[" + ec_word.get("usphone") + "]"
+                word_meaning = word_meaning.get("translateResult")[0].get("tgt")
+                batch_data.append((item, word_phonetic, word_meaning))
         word.append([i, item, word_meaning, word_phonetic, word_count[item]])
     if batch_data:
         cursor = conn.cursor()
