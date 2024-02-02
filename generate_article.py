@@ -22,7 +22,7 @@ def translate_words(words, title, word_count):
         word_meaning = get_word_meaning(item)
         word_phonetic = get_word_phonetic(item)
         if not word_meaning:
-            word_meaning = google_translate(item, proxy=proxy)
+            word_meaning = google_translate(item, toLan="zh-CN", proxy=proxy)
             word_data = get_word(item)
             if word_data and word_data['meaning'] and word_data['phonetic']:
                 word_meaning = word_data['meaning']

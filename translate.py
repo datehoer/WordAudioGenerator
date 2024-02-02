@@ -145,16 +145,16 @@ def request(url, params=None, proxy=None):
             time.sleep(1)
 
 
-def google_translate(content, proxy=None):
+def google_translate(content, toLan="zh-CN", proxy=None, fromLan="auto"):
     content = content.replace('\n', '')
     js = Py4Js()
     tk = js.get_tk(content)
     if len(content) > 4891:
         return '输入请不要超过4891个字符！'
     param = {'tk': tk, 'q': content}
-    url = """http://translate.google.com/translate_a/single?client=t&sl=en 
-        &tl=zh-CN&hl=zh-CN&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss 
-        &dt=t&ie=UTF-8&oe=UTF-8&clearbtn=1&otf=1&pc=1&srcrom=0&ssel=0&tsel=0&kc=2"""
+    url = """http://translate.google.com/translate_a/single?client=t&sl={} 
+        &tl={}&hl={}&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss 
+        &dt=t&ie=UTF-8&oe=UTF-8&clearbtn=1&otf=1&pc=1&srcrom=0&ssel=0&tsel=0&kc=2""".format(fromLan, toLan, toLan)
     result = request(url=url, params=param, proxy=proxy)
     trans = result.json()[0]
     res = ''
