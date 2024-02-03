@@ -14,6 +14,14 @@ def replace_multiple_spaces_with_single_space(text):
     return re.sub(r'\s+', ' ', text)
 
 
+def execute_sql(data):
+    cursor = conn.cursor()
+    cursor.executemany("INSERT OR REPLACE INTO words VALUES (?, ?, ?)", data)
+    conn.commit()
+    cursor.close()
+    logging.info("Insert or Replace {} Data Success!".format(len(data)))
+
+
 def translate_words(words, title, word_count):
     columns = ['No.', 'Word', 'Meaning', 'Pronunciation', 'Count']
     word = []
@@ -31,10 +39,7 @@ def translate_words(words, title, word_count):
                 # cursor.execute("INSERT OR REPLACE INTO words VALUES (?, ?, ?)", (item, word_phonetic, word_meaning))
         word.append([i, item, word_meaning, word_phonetic, word_count[item]])
     if batch_data:
-        cursor = conn.cursor()
-        cursor.executemany("INSERT OR REPLACE INTO words VALUES (?, ?, ?)", batch_data)
-        conn.commit()
-        cursor.close()
+        execute_sql(batch_data)
     df = pd.DataFrame(word, columns=columns)
     df.to_excel('data/' + title.split(': ')[-1].replace(" ", "_") + '_output.xlsx', index=False)
 
@@ -58,10 +63,7 @@ def translate_words_youdao(words, title, word_count):
                 batch_data.append((item, word_phonetic, word_meaning))
         word.append([i, item, word_meaning, word_phonetic, word_count[item]])
     if batch_data:
-        cursor = conn.cursor()
-        cursor.executemany("INSERT OR REPLACE INTO words VALUES (?, ?, ?)", batch_data)
-        conn.commit()
-        cursor.close()
+        execute_sql(batch_data)
     df = pd.DataFrame(word, columns=columns)
     df.to_excel('data/' + title.split(': ')[-1].replace(" ", "_") + '_output.xlsx', index=False)
 
