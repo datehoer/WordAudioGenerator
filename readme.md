@@ -23,7 +23,7 @@
 - `pandas`: 用于Excel文件生成
 - `epitran`: 用于单词发音生成 (不建议使用)
 - `sqlite3`: 存储单词发音 (推荐使用)
-- `pyttsx3`: 用于生成音频文件，如果为非Windows建议使用gTTS
+- `pyttsx3`: 用于生成音频文件，如果为非Windows建议使用openai/gTTS
 - 其他依赖请参考`requirements.txt`文件
 
 
