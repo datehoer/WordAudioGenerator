@@ -50,4 +50,4 @@ Linux安装教程参考[Installation of Flite](https://github.com/dmort27/epitra
 
 预处理以及结果处理参考[Preprocessors and postprocessors](https://github.com/dmort27/epitran?tab=readme-ov-file#preprocesssors-and-postprocessors)
 #### 2. sqlite3存储音标
-大约获取了3w左右的单词音标翻译，并将其存储在sqlite3中，通过查询来获取单词音标
+大约获取了4w左右的单词音标翻译，并将其存储在sqlite3中，通过查询来获取单词音标
