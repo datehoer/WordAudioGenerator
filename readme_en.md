@@ -2,7 +2,7 @@
 
 One-click generation of English-Chinese Excel word lists and audio files of articles composed of words.
 
-[Chinese Introduce](https://github.com/datehoer/WordAudioGenerator/blob/main/readme.md)|English Introduce
+[中文介绍](https://github.com/datehoer/WordAudioGenerator/blob/main/readme.md)|English Introduce
 
 ### 💬 Introduction
 
