@@ -11,6 +11,7 @@ openai_header = {
 }
 openai_text_data = {
      "model": text_model_name,
+     "response_format": { "type": "json_object" },
      "messages": [{"role": "user", "content": "Say this is a test!"}],
      "temperature": 0.7
 }

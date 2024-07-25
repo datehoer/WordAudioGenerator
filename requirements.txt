@@ -31,3 +31,4 @@ tqdm==4.66.1
 tzdata==2023.4
 unicodecsv==0.14.1
 urllib3==2.1.0
+json_repair==0.25.3
