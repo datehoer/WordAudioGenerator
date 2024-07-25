@@ -1,6 +1,8 @@
 # Word Audio Generator
 一键生成单词英汉Excel以及通过单词组成的文章音频文件
+
 中文介绍|[英文介绍](https://github.com/datehoer/WordAudioGenerator/blob/main/readme_en.md)
+
 ### 💬 介绍
 最近在v2ex上搜到了一篇帖子介绍了[英语提升技巧](https://www.v2ex.com/t/940277)，我认为除了在混眼熟的情况下还应该混个耳熟，并且正好看到了新东方100句子背雅思单词，于是就准备利用ChatGPT根据单词生成文章然后再生成音频文件之后在通勤的路上听
 

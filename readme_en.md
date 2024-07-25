@@ -1,7 +1,9 @@
 # Word Audio Generator
 
 One-click generation of English-Chinese Excel word lists and audio files of articles composed of words.
+
 [Chinese Introduce](https://github.com/datehoer/WordAudioGenerator/blob/main/readme.md)|English Introduce
+
 ### 💬 Introduction
 
 I recently found a post on v2ex introducing [English improvement techniques](https://www.v2ex.com/t/940277). Besides getting familiar with the words by sight, I believe it's also important to get familiar with them by sound. I came across New Oriental's 100 sentences for IELTS vocabulary, and decided to use ChatGPT to generate articles based on the words, then create audio files to listen to during commutes.
